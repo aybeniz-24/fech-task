@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fech</title>
+        <style>
+             #container {
+                margin: 20px;
+                text-align: center;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .photo-card {
+                margin: 10px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                width: 300px;
+                text-align: center;
+            }
+            img {
+                max-width: 100%;
+                border: 2px solid #ddd;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Foto</h1>
+        <div id="container">
+           
+        </div>
+        
+        <script>
+            fetch('https://jsonplaceholder.typicode.com/photos?_limit=500') 
+            .then(response => response.json())
+            .then(json => {
+                const container = document.querySelector("#container");
+                const fragment = document.createDocumentFragment(); 
+
+                json.forEach(photo => {
+                    const photoCard = document.createElement('div');
+                    photoCard.classList.add('photo-card');
+                    photoCard.innerHTML = `
+                        <img src="${photo.url}" alt="${photo.title}">
+                        <h3>${photo.title}</h3>
+                        <p>ID: ${photo.id}</p>
+                    `;
+                    fragment.appendChild(photoCard); 
+                });
+
+                container.appendChild(fragment);
+            })
+            .catch(error => {
+                console.error('Xəta baş verdi:', error);
+                document.querySelector("#container").innerText = 'Məlumat yüklənmədi.';
+            });
+        </script>
+    </body>
+</html>
